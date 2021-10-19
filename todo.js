@@ -20,7 +20,7 @@ let id = 3;
 /*
  * GET todos listing.
  */
-exports.findAll = function (req, res) {
+exports.findAll = function (_, res) {
   res.json(200, todos);
 };
 
@@ -28,14 +28,16 @@ exports.findAll = function (req, res) {
  * GET todo by identifier.
  */
 exports.findById = function (req, res) {
-  res.json(404, { error: 'Not found' });
+  const id = parseInt(req.params.id)
+  const todo = todos.find(todo => todo.id === id)
+  res.status(200).json(todo)
 };
 
 /*
  * Create a todo.
  */
 exports.addTodo = function (req, res) {
-  var newTodo = request.todos
+  const newTodo = request.todos
   newTodo.id =  todos.length +1;
   todos.push(newTodo);
   res.status(201).json(newTodo);
@@ -45,7 +47,14 @@ exports.addTodo = function (req, res) {
  * Update a todo by its identifier.
  */
 exports.updateTodo = function (req, res) {
-  res.json(404, { error: 'Not found' });
+  const id = request.params.id;
+  if (todos[id]){
+    const updatedTodo = JSON.parse(request.body);
+    todos[id] = updatedTodo;
+    res.status(204).send();
+  }else{
+    res.json(404, { error: 'Not found' });
+  }
 };
 
 /*
