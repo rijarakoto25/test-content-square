@@ -20,7 +20,7 @@ let id = 3;
 /*
  * GET todos listing.
  */
-exports.findAll = function (_, res) {
+exports.findAll = function (req, res) {
   res.json(200, todos);
 };
 
@@ -35,7 +35,10 @@ exports.findById = function (req, res) {
  * Create a todo.
  */
 exports.addTodo = function (req, res) {
-  res.status(201).end();
+  var newTodo = request.todos
+  newTodo.id =  todos.length +1;
+  todos.push(newTodo);
+  res.status(201).json(newTodo);
 };
 
 /*
